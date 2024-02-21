@@ -130,6 +130,16 @@ class ToGet:
         return sheets
 
     @staticmethod
+    def open_sheet_by_name(xlsx_path: str, sheet_name: str):
+        """Open a specific sheet by name from a Workbook."""
+        wb = load_workbook(xlsx_path, data_only=True)
+        if sheet_name in wb.sheetnames:
+            return wb[sheet_name]
+        else:
+            print(f"Sheet named '{sheet_name}' does not exist in the workbook.")
+            return None
+
+    @staticmethod
     def csv_to_list(csv_file: str, delimiter: str = "#") -> list:
         """Get list from a CSV file with custom delimiter"""
         list_of_mos: list = []
@@ -245,31 +255,4 @@ class ToGet:
         # Use a regular expression to filter out
         # non-alphanumeric characters and underscores
         filtered_string = re.sub(r"[^a-zA-Z0-9_]", "", input_string)
-        return filtered_string
-
-    @staticmethod
-    def filter_alphanumeric_underscore_brace(input_string: str):
-        # Replace spaces with underscores
-        input_string = input_string.replace(" ", "_")
-
-        # replace double underscore to one underscore
-        input_string = input_string.replace("__", "_")
-
-        # Use a regular expression to filter out
-        # non-alphanumeric characters and underscores
-        filtered_string = re.sub(r"[^a-zA-Z0-9_\[]", "", input_string)
-        return filtered_string
-
-    @staticmethod
-    def filter_for_suffix(input_string: str):
-        # Replace spaces with underscores
-        input_string = input_string.strip()
-        # input_string = input_string.replace(" ", "_")
-
-        # replace double underscore to one underscore
-        # input_string = input_string.replace("__", "_")
-
-        # Use a regular expression to filter out
-        # non-alphanumeric characters and underscores
-        filtered_string = re.sub(r"[^a-zA-Z0-9_\[\.]", "", input_string)
         return filtered_string

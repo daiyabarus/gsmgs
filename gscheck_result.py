@@ -235,7 +235,6 @@ def get_moc_pass(dt_pass: dict, GeranCellId: str) -> str:
     elif moc_miss == 0:
         moc_pass = "PASS"
     elif moc_miss > 0:
-        # moc_pass = f"FAIL/{moc_miss}"
         moc_pass = "FAIL"
 
     return moc_pass

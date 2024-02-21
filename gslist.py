@@ -130,10 +130,10 @@ def gs_idlechannelmeasurement():
     return [
         ("icmState", "ACTIVE"),
         ("intAve", "25"),
-        ("limit1", "4"),
-        ("limit2", "8"),
-        ("limit3", "12"),
-        ("limit4", "18"),
+        ("limit1", "SUFFIX"),
+        ("limit2", "SUFFIX"),
+        ("limit3", "SUFFIX"),
+        ("limit4", "SUFFIX"),
     ]
 
 

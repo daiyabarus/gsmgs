@@ -36,12 +36,12 @@ def gs_hierarchicalcellstructure_process(
                        oss_value,
                        baseline_value,
                        compliance,
-                       """
-                       SubNetwork=ONRM_ROOT_MO_R,SubNetwork=HA1BSC1,
-                       MeContext=HA1BSC1,ManagedElement=HA1BSC1,
-                       BscFunction=1,BscM=1,GeranCellM=1,GeranCell=SJKL3,
-                       HierarchicalCellStructure=1
-                       """
+                       # """
+                       # SubNetwork=ONRM_ROOT_MO_R,SubNetwork=HA1BSC1,
+                       # MeContext=HA1BSC1,ManagedElement=HA1BSC1,
+                       # BscFunction=1,BscM=1,GeranCellM=1,GeranCell=SJKL3,
+                       # HierarchicalCellStructure=1
+                       # """
                        f"cmedit set {prefix}{NodeId},MeContext={NodeId},"
                        f"ManagedElement={NodeId},BscFunction=1,BscM=1,"
                        f"GeranCellM=1,GeranCell={GeranCellId},"

@@ -34,11 +34,6 @@ def gs_dtm_process(txt_data: list, gslist_data: list, dt_col: dict, moc: str):
                        oss_value,
                        baseline_value,
                        compliance,
-                       """
-                       SubNetwork=ONRM_ROOT_MO_R,SubNetwork=HA1BSC1,
-                       MeContext=HA1BSC1,ManagedElement=HA1BSC1,
-                       BscFunction=1,BscM=1,GeranCellM=1,GeranCell=SJKL3,
-                       ,Dtm=1                       """
                        f"cmedit set {prefix}{NodeId},MeContext={NodeId},"
                        f"ManagedElement={NodeId},BscFunction=1,BscM=1,"
                        f"GeranCellM=1,GeranCell={GeranCellId},"

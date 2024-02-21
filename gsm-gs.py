@@ -1,6 +1,5 @@
 import sys
 
-# import csv
 import os
 import gslist
 import enumlist
@@ -36,14 +35,21 @@ from gs.gs_subcellloaddistribution import gs_subcellloaddistribution_process
 from printtofile import PrintToFile
 from gsheaderslist import Headers
 from utils import UtilFunc
+from toget import ToGet
 from gscheck_result import gs_process_result
 
+def sheet_to_dict_list(worksheet):
+    data = []
+    for row in worksheet.iter_rows(values_only=True, min_row=2):
+        row_data = {worksheet.cell(row=1, column=col).value: cell for col, cell in enumerate(row, start=1)}
+        data.append(row_data)
+    return data
 
 def main():
     source_folder = sys.argv[1]
     source_netstats = sys.argv[2]
+    source_newreference = sys.argv[3]
     gs_result_final = []
-    # gerancell
 
     gerancell_csv = os.path.join(source_folder, "GeranCell.csv")
     gerancell_data = UtilFunc.txtfile_to_list(txtpath=gerancell_csv)
@@ -55,7 +61,6 @@ def main():
     )
     gs_result_final.extend(gs_result_gerancell)
 
-    # CellLoadSharing
     cellloadsharing_csv = os.path.join(source_folder, "CellLoadSharing.csv")
     cellloadsharing_data = UtilFunc.txtfile_to_list(txtpath=cellloadsharing_csv)
     gs_result_cellloadsharing = gs_cellloadsharing_process(
@@ -66,9 +71,12 @@ def main():
     )
     gs_result_final.extend(gs_result_cellloadsharing)
 
-    # ChannelAllocAndOpt
-    channelallocandopt_csv = os.path.join(source_folder, "ChannelAllocAndOpt.csv")
-    channelallocandopt_data = UtilFunc.txtfile_to_list(txtpath=channelallocandopt_csv)
+    channelallocandopt_csv = os.path.join(
+        source_folder, "ChannelAllocAndOpt.csv"
+    )
+    channelallocandopt_data = UtilFunc.txtfile_to_list(
+        txtpath=channelallocandopt_csv
+    )
     gs_result_channelallocandopt = gs_channelallocandopt_process(
         txt_data=channelallocandopt_data,
         gslist_data=gslist.gs_channelallocandopt(),
@@ -115,8 +123,12 @@ def main():
     gs_result_final.extend(gs_result_dynamicfrhrmodeadaption)
 
     # DynamicHrAllocation.csv
-    dynamichrallocation_csv = os.path.join(source_folder, "DynamicHrAllocation.csv")
-    dynamichrallocation_data = UtilFunc.txtfile_to_list(txtpath=dynamichrallocation_csv)
+    dynamichrallocation_csv = os.path.join(
+        source_folder, "DynamicHrAllocation.csv"
+    )
+    dynamichrallocation_data = UtilFunc.txtfile_to_list(
+        txtpath=dynamichrallocation_csv
+    )
     gs_result_dynamichrallocation = gs_dynamichrallocation_process(
         txt_data=dynamichrallocation_data,
         gslist_data=gslist.gs_dynamichrallocation(),
@@ -127,7 +139,9 @@ def main():
 
     # GeranCellRelation.csv
     gerancellrelation_csv = os.path.join(source_folder, "GeranCellRelation.csv")
-    gerancellrelation_data = UtilFunc.txtfile_to_list(txtpath=gerancellrelation_csv)
+    gerancellrelation_data = UtilFunc.txtfile_to_list(
+        txtpath=gerancellrelation_csv
+    )
     gs_result_gerancellrelation = gs_gerancellrelation_process(
         txt_data=gerancellrelation_data,
         gslist_data=gslist.gs_gerancellrelation(),
@@ -179,7 +193,9 @@ def main():
 
     # IdleModeAndPaging.csv
     idlemodeandpaging_csv = os.path.join(source_folder, "IdleModeAndPaging.csv")
-    idlemodeandpaging_data = UtilFunc.txtfile_to_list(txtpath=idlemodeandpaging_csv)
+    idlemodeandpaging_data = UtilFunc.txtfile_to_list(
+        txtpath=idlemodeandpaging_csv
+    )
     gs_result_idlemodeandpaging = gs_idlemodeandpaging_process(
         txt_data=idlemodeandpaging_data,
         gslist_data=gslist.gs_idlemodeandpaging(),
@@ -190,7 +206,9 @@ def main():
 
     # InterRanMobility.csv
     interranmobility_csv = os.path.join(source_folder, "InterRanMobility.csv")
-    interranmobility_data = UtilFunc.txtfile_to_list(txtpath=interranmobility_csv)
+    interranmobility_data = UtilFunc.txtfile_to_list(
+        txtpath=interranmobility_csv
+    )
     gs_result_interranmobility = gs_interranmobility_process(
         txt_data=interranmobility_data,
         gslist_data=gslist.gs_interranmobility(),
@@ -281,10 +299,16 @@ def main():
     gs_result_final.extend(gs_result_msqueuing)
 
     # PowerControl.csv
+    new_gsmcells_sheet = ToGet.open_sheet_by_name(source_newreference, "gsmCells")
+    new_sites_sheet = ToGet.open_sheet_by_name(source_newreference, "sites")
+    new_gsmcells = sheet_to_dict_list(new_gsmcells_sheet)
+    new_sites = sheet_to_dict_list(new_sites_sheet)
     powercontrol_csv = os.path.join(source_folder, "PowerControl.csv")
     powercontrol_data = UtilFunc.txtfile_to_list(txtpath=powercontrol_csv)
     gs_result_powercontrol = gs_powercontrol_process(
         txt_data=powercontrol_data,
+        newreference_gsmcells=new_gsmcells,
+        newreference_sites=new_sites,
         gslist_data=gslist.gs_powercontrol(),
         dt_col=enumlist.powercontrol_col(),
         moc="PowerControl",
@@ -292,7 +316,9 @@ def main():
     gs_result_final.extend(gs_result_powercontrol)
 
     # PowerControlDownlink.csv
-    powercontroldownlink_csv = os.path.join(source_folder, "PowerControlDownlink.csv")
+    powercontroldownlink_csv = os.path.join(
+        source_folder, "PowerControlDownlink.csv"
+    )
     powercontroldownlink_data = UtilFunc.txtfile_to_list(
         txtpath=powercontroldownlink_csv
     )
@@ -305,8 +331,12 @@ def main():
     gs_result_final.extend(gs_result_powercontroldownlink)
 
     # PowerControlUplink.csv
-    powercontroluplink_csv = os.path.join(source_folder, "PowerControlUplink.csv")
-    powercontroluplink_data = UtilFunc.txtfile_to_list(txtpath=powercontroluplink_csv)
+    powercontroluplink_csv = os.path.join(
+        source_folder, "PowerControlUplink.csv"
+    )
+    powercontroluplink_data = UtilFunc.txtfile_to_list(
+        txtpath=powercontroluplink_csv
+    )
     gs_result_powercontroluplink = gs_powercontroluplink_process(
         txt_data=powercontroluplink_data,
         gslist_data=gslist.gs_powercontroluplink(),
@@ -386,14 +416,15 @@ def main():
     )
 
     # Print To File (xlsx)
-    result_file = "gs_result_" + UtilFunc.get_current_datetime() + ".xlsx"
+    result_file = "GS_RESULT_" + UtilFunc.get_current_datetime() + ".xlsx"
 
     is_ok_gsresult = PrintToFile.to_xlsx_undefined_filled(
         file_to_save=result_file,
-        ws_name="Summary",  # rename from Results to Summary
+        ws_name="Summary",
         list_of_header=Headers.header_result(),
         list_of_contents=gsresult_summary,
-        list_filled=["MISMATCH", "UNDEFINED", "FAIL"],
+        list_of_red=["MISMATCH", "UNDEFINED", "FAIL"],
+        list_of_green=["PASS", "MATCH"]
     )
 
     is_ok_gerancell = PrintToFile.to_xlsx_undefined_filled(
@@ -401,7 +432,8 @@ def main():
         ws_name="GS_Audit",
         list_of_header=Headers.header_baseline(),
         list_of_contents=gs_result_final,
-        list_filled=["MISMATCH"],
+        list_of_red=["MISMATCH"],
+        list_of_green=["MATCH"]
     )
 
     print("GS Result save as:", result_file)
