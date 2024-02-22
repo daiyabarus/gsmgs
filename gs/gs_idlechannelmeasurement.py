@@ -9,8 +9,7 @@ def gs_idlechannelmeasurement_process(
 ):
     gs_result = []
 
-    netstatremedy_dict = {str(row[0]).strip():
-        row[9] for row in netstatremedy_data}
+    netstatremedy_dict = {str(row[0]).strip(): row[9] for row in netstatremedy_data}
 
     for raw_data in txt_data:
         if str(raw_data).strip() == "" or "NodeId" in str(raw_data):

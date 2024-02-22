@@ -1,9 +1,8 @@
-from utils import UtilFunc
 from enumlist import remedy_col
-
+from toget import ToGet
 
 def cr_dt_from_netstats(netpath: str):
-    netlist = UtilFunc.csv_to_list(csv_file=netpath)
+    netlist = ToGet.csv_to_list(csv_file=netpath)
     dt_col = remedy_col()
 
     dt_sector_name__site_name = dict()
@@ -120,7 +119,7 @@ def gs_process_result(
         GeranCellId = gerancell_data[1]
         loc_code = dt_sector_name__loc_code.get(GeranCellId, "UNDEFINED")
         site_name = dt_sector_name__site_name.get(GeranCellId, "UNDEFINED")
-        audit_date = UtilFunc.get_current_datetime_MMDDYYYY()
+        audit_date = ToGet.get_current_date()
         audit_by = "YUPANA"
         gerancell_pass: int = get_moc_pass(dt_mismatch_gerancell, GeranCellId)
         subcellloaddistribution_pass: int = get_moc_pass(

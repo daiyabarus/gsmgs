@@ -140,7 +140,7 @@ class ToGet:
             return None
 
     @staticmethod
-    def csv_to_list(csv_file: str, delimiter: str = "#") -> list:
+    def csv_to_list(csv_file: str, delimiter: str = ";") -> list:
         """Get list from a CSV file with custom delimiter"""
         list_of_mos: list = []
         with open(csv_file) as f:
@@ -187,6 +187,16 @@ class ToGet:
                 reader_line.append(cline)
 
         return reader_line
+
+# INFO: Sheet to dict list
+    @staticmethod
+    def sheet_to_dict_list(worksheet):
+        data = []
+        for row in worksheet.iter_rows(values_only=True, min_row=2):
+            row_data = {worksheet.cell(row=1, column=col).value:
+                cell for col, cell in enumerate(row, start=1)}
+            data.append(row_data)
+        return data
 
     @staticmethod
     def copyfile(source_path: str, target_path: str) -> bool:
