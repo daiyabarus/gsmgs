@@ -52,6 +52,7 @@ coverage.xml
 cover/
 *.xlsx
 *.csv
+/*.csv
 # Translations
 *.mo
 *.pot
