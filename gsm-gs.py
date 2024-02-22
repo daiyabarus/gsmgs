@@ -177,6 +177,7 @@ def main():
     gs_result_final.extend(gs_result_hierarchicalcellstructure)
 
     # IdleChannelMeasurement.csv
+    netstatremedy_data = UtilFunc.csv_to_list(csv_file=source_netstats)
     idlechannelmeasurement_csv = os.path.join(
         source_folder, "IdleChannelMeasurement.csv"
     )
@@ -185,6 +186,7 @@ def main():
     )
     gs_result_idlechannelmeasurement = gs_idlechannelmeasurement_process(
         txt_data=idlechannelmeasurement_data,
+        netstatremedy_data=netstatremedy_data,
         gslist_data=gslist.gs_idlechannelmeasurement(),
         dt_col=enumlist.idlechannelmeasurement_col(),
         moc="IdleChannelMeasurement",

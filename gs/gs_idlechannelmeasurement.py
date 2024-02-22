@@ -1,7 +1,16 @@
+from toget import ToGet
+
 def gs_idlechannelmeasurement_process(
-    txt_data: list, gslist_data: list, dt_col: dict, moc: str
+    txt_data: list,
+    netstatremedy_data: list,
+    gslist_data: list,
+    dt_col: dict,
+    moc: str
 ):
     gs_result = []
+
+    netstatremedy_dict = {str(row[0]).strip():
+        row[9] for row in netstatremedy_data}
 
     for raw_data in txt_data:
         if str(raw_data).strip() == "" or "NodeId" in str(raw_data):
@@ -10,10 +19,36 @@ def gs_idlechannelmeasurement_process(
         g_data = str(raw_data).split()
         NodeId = g_data[dt_col.get("NodeId", 0)]
         GeranCellId = g_data[dt_col.get("GeranCellId", 4)]
+        sector_type = netstatremedy_dict.get(GeranCellId, "")
 
         for gs_data in gslist_data:
             param = gs_data[0]
             baseline_value = gs_data[1]
+
+            if baseline_value == "SUFFIX":
+                if param == "limit1":
+                    if "MICRO" in sector_type:
+                        baseline_value = "4"
+                    else:
+                        baseline_value = "0"
+
+                elif param == "limit2":
+                    if "MICRO" in sector_type:
+                        baseline_value = "8"
+                    else:
+                        baseline_value = "3"
+
+                elif param == "limit3":
+                    if "MICRO" in sector_type:
+                        baseline_value = "12"
+                    else:
+                        baseline_value = "6"
+
+                elif param == "limit4":
+                    if "MICRO" in sector_type:
+                        baseline_value = "18"
+                    else:
+                        baseline_value = "12"
 
             index_param = dt_col.get(param, -1)
             if index_param == -1:
@@ -21,8 +56,10 @@ def gs_idlechannelmeasurement_process(
             else:
                 oss_value = g_data[index_param]
 
-            compliance = "MATCH" if str(oss_value) == str(baseline_value) \
-                         else "MISMATCH"
+            if ToGet.is_compare(oss_value, baseline_value):
+                compliance = "MATCH"
+            else:
+                compliance = "MISMATCH"
 
             prefix = (
                 "SubNetwork=ONRM_ROOT_MO,SubNetwork="
@@ -36,12 +73,6 @@ def gs_idlechannelmeasurement_process(
                        oss_value,
                        baseline_value,
                        compliance,
-                       # """
-                       # SubNetwork=ONRM_ROOT_MO_R,SubNetwork=HA1BSC1,
-                       # MeContext=HA1BSC1,ManagedElement=HA1BSC1,
-                       # BscFunction=1,BscM=1,GeranCellM=1,GeranCell=SJKL3,
-                       # ChannelAllocAndOpt=1,IdleChannelMeasurement=1
-                       # """
                        f"cmedit set {prefix}{NodeId},MeContext={NodeId},"
                        f"ManagedElement={NodeId},BscFunction=1,BscM=1,"
                        f"GeranCellM=1,GeranCell={GeranCellId},"
