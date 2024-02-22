@@ -64,6 +64,7 @@ def gs_process_result(
     gs_result_hierarchicalcellstructure: list,
     gs_result_gprs: list,
     gs_result_gerancellrelation: list,
+    gs_result_externalgerancellrelation: list,
     gs_result_dynamichrallocation: list,
     gs_result_dynamicfrhrmodeadaption: list,
     gs_result_dtm: list,
@@ -101,6 +102,7 @@ def gs_process_result(
     )
     dt_mismatch_gprs = get_mismatches(gs_result_gprs)
     dt_mismatch_gerancellrelation = get_mismatches(gs_result_gerancellrelation)
+    dt_mismatch_externalgerancellrelation = get_mismatches(gs_result_externalgerancellrelation)
     dt_mismatch_dynamichrallocation = get_mismatches(gs_result_dynamichrallocation)
     dt_mismatch_dynamicfrhrmodeadaption = get_mismatches(
         gs_result_dynamicfrhrmodeadaption
@@ -167,6 +169,9 @@ def gs_process_result(
         gerancellrelation_pass: int = get_moc_pass(
             dt_mismatch_gerancellrelation, GeranCellId
         )
+        externalgerancellrelation_pass: int = get_moc_pass(
+            dt_mismatch_externalgerancellrelation, GeranCellId
+        )
         dynamichrallocation_pass: int = get_moc_pass(
             dt_mismatch_dynamichrallocation, GeranCellId
         )
@@ -211,6 +216,7 @@ def gs_process_result(
             hierarchicalcellstructure_pass,
             gprs_pass,
             gerancellrelation_pass,
+            externalgerancellrelation_pass,
             dynamichrallocation_pass,
             dynamicfrhrmodeadaption_pass,
             dtm_pass,

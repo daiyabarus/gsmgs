@@ -103,6 +103,22 @@ def gs_gerancellrelation():
         ("tROffset", "0"),
     ]
 
+def gs_externalgerancellrelation():
+    return [
+        ("cand", "BOTH"),
+        ("awOffset", "3"),
+        ("bqOffset", "5"),
+        ("bqOffsetAfr", "5"),
+        ("hiHyst", "5"),
+        ("kHyst", "3"),
+        ("kOffset", "0"),
+        ("lHyst", "3"),
+        ("lOffset", "0"),
+        ("loHyst", "5"),
+        ("offset", "0"),
+        ("tRHyst", "2"),
+        ("tROffset", "0"),
+    ]
 
 def gs_gprs():
     return [

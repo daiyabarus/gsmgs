@@ -69,6 +69,33 @@ def gerancellrelation_col():
         "tROffset": 19,
     }
 
+def externalgerancellrelation_col():
+    return {
+        "NodeId": 0,
+        "BscFunctionId": 1,
+        "BscMId": 2,
+        "GeranCellMId": 3,
+        "GeranCellId": 4,
+        "ExternalGeranCellRelationId": 5,
+        "awOffset": 6,
+        "bqOffset": 7,
+        "bqOffsetAfr": 8,
+        "bqOffsetAwb": 9,
+        "cand": 10,
+        "externalGeranCellRelationId": 11,
+        "gprsValid": 12,
+        "hiHyst": 13,
+        "kHyst": 14,
+        "kOffset": 15,
+        "lHyst": 16,
+        "lOffset": 17,
+        "loHyst": 18,
+        "offset": 19,
+        "pROffset": 20,
+        "relType": 21,
+        "tRHyst": 22,
+        "tROffset": 23,
+    }
 
 def gprs_col():
     return {

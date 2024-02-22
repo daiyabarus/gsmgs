@@ -1,29 +1,24 @@
-def gs_gerancellrelation_process(
-    txt_data: list, gslist_data: list, dt_col: dict, moc: str
+def gs_externalgerancellrelation_process(
+    txt_data: list,
+    gslist_data: list,
+    dt_col: dict,
+    moc: str
 ):
     gs_result = []
 
     for raw_data in txt_data:
-
         if str(raw_data).strip() == "" or "NodeId" in str(raw_data):
             continue
 
         g_data = str(raw_data).split()
         NodeId = g_data[dt_col.get("NodeId", 0)]
         GeranCellId = g_data[dt_col.get("GeranCellId", 4)]
-        GeranCellRelationId = g_data[dt_col.get("GeranCellRelationId", 6)]
+        externalgeracellrelationid = g_data[dt_col.get(
+            "ExternalGeranCellRelationId", 5)]
 
         for gs_data in gslist_data:
             param = gs_data[0]
             baseline_value = gs_data[1]
-
-            if baseline_value == "SUFFIX":
-
-                if param == "cs":
-                    if str(GeranCellId[:-1]) == str(GeranCellRelationId[:-1]):
-                        baseline_value = "YES"
-                    else:
-                        baseline_value = "NO"
 
             index_param = dt_col.get(param, -1)
             if index_param == -1:
@@ -48,7 +43,8 @@ def gs_gerancellrelation_process(
                        compliance,
                        f"cmedit set {prefix}{NodeId},MeContext={NodeId},"
                        f"ManagedElement={NodeId},BscFunction=1,BscM=1,"
-                       f"GeranCellM=1,GeranCell={GeranCellId},GeranCellRelation={GeranCellRelationId} "
+                       f"GeranCellM=1,GeranCell={GeranCellId},"
+                       f"ExternalGeranCellRelation={externalgeracellrelationid} "
                        f"{param}={baseline_value}"
                        f" --force"]
 

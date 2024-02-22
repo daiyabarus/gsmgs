@@ -41,6 +41,7 @@ class Headers:
             "HierarchicalCellStructure",
             "Gprs",
             "GeranCellRelation",
+            "ExternalGeranCellRelation",
             "DynamicHrAllocation",
             "DynamicFrHrModeAdaption",
             "Dtm",

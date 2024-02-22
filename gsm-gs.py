@@ -30,6 +30,7 @@ from gs.gs_powercontroluplink import gs_powercontroluplink_process
 from gs.gs_powersavings import gs_powersavings_process
 from gs.gs_radiolinktimeout import gs_radiolinktimeout_process
 from gs.gs_subcellloaddistribution import gs_subcellloaddistribution_process
+from gs.gs_externalgerancellrelation import gs_externalgerancellrelation_process
 from printtofile import PrintToFile
 from gsheaderslist import Headers
 from toget import ToGet
@@ -142,6 +143,20 @@ def main():
         moc="GeranCellRelation",
     )
     gs_result_final.extend(gs_result_gerancellrelation)
+
+    # ExternalGeranCellRelation.csv
+    externalgerancellrelation_csv = os.path.join(
+        source_folder, "ExternalGeranCellRelation.csv")
+    externalgerancellrelation_data = ToGet.txtfile_to_list(
+        txtpath=externalgerancellrelation_csv
+    )
+    gs_result_externalgerancellrelation = gs_externalgerancellrelation_process(
+        txt_data=externalgerancellrelation_data,
+        gslist_data=gslist.gs_externalgerancellrelation(),
+        dt_col=enumlist.externalgerancellrelation_col(),
+        moc="ExternalGeranCellRelation",
+    )
+    gs_result_final.extend(gs_result_externalgerancellrelation)
 
     # Gprs.csv
     gprs_csv = os.path.join(source_folder, "Gprs.csv")
@@ -391,6 +406,7 @@ def main():
         gs_result_dynamicfrhrmodeadaption=gs_result_dynamicfrhrmodeadaption,
         gs_result_dynamichrallocation=gs_result_dynamichrallocation,
         gs_result_gerancellrelation=gs_result_gerancellrelation,
+        gs_result_externalgerancellrelation=gs_result_externalgerancellrelation,
         gs_result_gprs=gs_result_gprs,
         gs_result_hierarchicalcellstructure=gs_result_hierarchicalcellstructure,
         gs_result_idlechannelmeasurement=gs_result_idlechannelmeasurement,
