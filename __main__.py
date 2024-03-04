@@ -4,33 +4,37 @@ import gslist
 import enumlist
 import time
 from datetime import datetime
-from gs.gs_channelallocandopt import gs_channelallocandopt_process
-from gs.gs_cellloadsharing import gs_cellloadsharing_process
-from gs.gs_channelgroup import gs_channelgroup_process
-from gs.gs_dtm import gs_dtm_process
-from gs.gs_dynamicfrhrmodeadaption import gs_dynamicfrhrmodeadaption_process
-from gs.gs_dynamichrallocation import gs_dynamichrallocation_process
-from gs.gs_gerancell import gs_gerancell_process
-from gs.gs_gerancellrelation import gs_gerancellrelation_process
-from gs.gs_gprs import gs_gprs_process
-from gs.gs_hierarchicalcellstructure import gs_hierarchicalcellstructure_process
-from gs.gs_idlechannelmeasurement import gs_idlechannelmeasurement_process
-from gs.gs_idlemodeandpaging import gs_idlemodeandpaging_process
-from gs.gs_interranmobility import gs_interranmobility_process
-from gs.gs_lchadaptiveconf import gs_lchadaptiveconf_process
-from gs.gs_locatingfilter import gs_locatingfilter_process
-from gs.gs_locatingintracellhandover import gs_locatingintracellhandover_process
-from gs.gs_locatingpenalty import gs_locatingpenalty_process
-from gs.gs_locatingurgency import gs_locatingurgency_process
-from gs.gs_mobility import gs_mobility_process
-from gs.gs_msqueuing import gs_msqueuing_process
-from gs.gs_powercontrol import gs_powercontrol_process
-from gs.gs_powercontroldownlink import gs_powercontroldownlink_process
-from gs.gs_powercontroluplink import gs_powercontroluplink_process
-from gs.gs_powersavings import gs_powersavings_process
-from gs.gs_radiolinktimeout import gs_radiolinktimeout_process
-from gs.gs_subcellloaddistribution import gs_subcellloaddistribution_process
-from gs.gs_externalgerancellrelation import gs_externalgerancellrelation_process
+
+from gs import (
+    gs_channelallocandopt_process,
+    gs_cellloadsharing_process,
+    gs_channelgroup_process,
+    gs_dtm_process,
+    gs_dynamicfrhrmodeadaption_process,
+    gs_dynamichrallocation_process,
+    gs_gerancell_process,
+    gs_gerancellrelation_process,
+    gs_gprs_process,
+    gs_hierarchicalcellstructure_process,
+    gs_idlechannelmeasurement_process,
+    gs_idlemodeandpaging_process,
+    gs_interranmobility_process,
+    gs_lchadaptiveconf_process,
+    gs_locatingfilter_process,
+    gs_locatingintracellhandover_process,
+    gs_locatingpenalty_process,
+    gs_locatingurgency_process,
+    gs_mobility_process,
+    gs_msqueuing_process,
+    gs_powercontrol_process,
+    gs_powercontroldownlink_process,
+    gs_powercontroluplink_process,
+    gs_powersavings_process,
+    gs_radiolinktimeout_process,
+    gs_subcellloaddistribution_process,
+    gs_externalgerancellrelation_process,
+)
+
 from printtofile import PrintToFile
 from gsheaderslist import Headers
 from toget import ToGet
@@ -39,10 +43,17 @@ from gscheck_result import gs_process_result
 startTime = time.time()
 print("StartTime: ", datetime.fromtimestamp(startTime))
 
+
 def main():
     source_folder = sys.argv[1]
-    source_netstats = sys.argv[2]
-    source_newreference = sys.argv[3]
+    # source_netstats = sys.argv[2]
+    # source_newreference = sys.argv[3]
+    # source_masterlist = sys.argv[4]
+    source_data = sys.argv[2]
+    source_netstats = os.path.join(source_data, "netstatRemedy.csv")
+    source_masterlist = os.path.join(source_data, "MasterSiteList.xlsx")
+    source_newreference = os.path.join(source_data, "newReference.xlsx")
+
     gs_result_final = []
 
     gerancell_csv = os.path.join(source_folder, "GeranCell.csv")
@@ -132,7 +143,9 @@ def main():
     gs_result_final.extend(gs_result_dynamichrallocation)
 
     # GeranCellRelation.csv
-    gerancellrelation_csv = os.path.join(source_folder, "GeranCellRelation.csv")
+    gerancellrelation_csv = os.path.join(
+        source_folder, "GeranCellRelation.csv"
+    )
     gerancellrelation_data = ToGet.txtfile_to_list(
         txtpath=gerancellrelation_csv
     )
@@ -146,7 +159,8 @@ def main():
 
     # ExternalGeranCellRelation.csv
     externalgerancellrelation_csv = os.path.join(
-        source_folder, "ExternalGeranCellRelation.csv")
+        source_folder, "ExternalGeranCellRelation.csv"
+    )
     externalgerancellrelation_data = ToGet.txtfile_to_list(
         txtpath=externalgerancellrelation_csv
     )
@@ -202,12 +216,22 @@ def main():
     gs_result_final.extend(gs_result_idlechannelmeasurement)
 
     # IdleModeAndPaging.csv
-    idlemodeandpaging_csv = os.path.join(source_folder, "IdleModeAndPaging.csv")
+    mastersite_sheets = ToGet.open_sheet_by_name(
+        source_masterlist, "MasterSiteList"
+    )
+    mastersite_list = ToGet.sheet_to_dict_list(mastersite_sheets)
+    netstatremedy_data = ToGet.csv_to_list(csv_file=source_netstats)
+
+    idlemodeandpaging_csv = os.path.join(
+        source_folder, "IdleModeAndPaging.csv"
+    )
     idlemodeandpaging_data = ToGet.txtfile_to_list(
         txtpath=idlemodeandpaging_csv
     )
     gs_result_idlemodeandpaging = gs_idlemodeandpaging_process(
         txt_data=idlemodeandpaging_data,
+        netlist_data=netstatremedy_data,
+        mastersite_data=mastersite_list,
         gslist_data=gslist.gs_idlemodeandpaging(),
         dt_col=enumlist.idlemodeandpaging_col(),
         moc="IdleModeAndPaging",
@@ -216,9 +240,7 @@ def main():
 
     # InterRanMobility.csv
     interranmobility_csv = os.path.join(source_folder, "InterRanMobility.csv")
-    interranmobility_data = ToGet.txtfile_to_list(
-        txtpath=interranmobility_csv
-    )
+    interranmobility_data = ToGet.txtfile_to_list(txtpath=interranmobility_csv)
     gs_result_interranmobility = gs_interranmobility_process(
         txt_data=interranmobility_data,
         gslist_data=gslist.gs_interranmobility(),
@@ -308,9 +330,9 @@ def main():
     )
     gs_result_final.extend(gs_result_msqueuing)
 
-# INFO: update in ToGet sheet to dict
-    # PowerControl.csv
-    new_gsmcells_sheet = ToGet.open_sheet_by_name(source_newreference, "gsmCells")
+    new_gsmcells_sheet = ToGet.open_sheet_by_name(
+        source_newreference, "gsmCells"
+    )
     new_sites_sheet = ToGet.open_sheet_by_name(source_newreference, "sites")
     new_gsmcells = ToGet.sheet_to_dict_list(new_gsmcells_sheet)
     new_sites = ToGet.sheet_to_dict_list(new_sites_sheet)
@@ -369,9 +391,7 @@ def main():
 
     # RadioLinkTimeout.csv
     radiolinktimeout_csv = os.path.join(source_folder, "RadioLinkTimeout.csv")
-    radiolinktimeout_data = ToGet.txtfile_to_list(
-        txtpath=radiolinktimeout_csv
-    )
+    radiolinktimeout_data = ToGet.txtfile_to_list(txtpath=radiolinktimeout_csv)
     gs_result_radiolinktimeout = gs_radiolinktimeout_process(
         txt_data=radiolinktimeout_data,
         gslist_data=gslist.gs_radiolinktimeout(),
@@ -427,8 +447,11 @@ def main():
         gs_result_subcellloaddistribution=gs_result_subcellloaddistribution,
     )
 
-    # Print To File (xlsx)
-    result_file = "GS_GSM_RESULT_" + ToGet.get_current_datetime() + ".xlsx"
+    enm = source_folder[:6]
+    result_file = os.path.join(
+        source_folder,
+        str(enm) + "_GS_UMTS_RESULT_" + ToGet.get_current_datetime() + ".xlsx",
+    )
 
     is_ok_gsresult = PrintToFile.to_xlsx_undefined_filled(
         file_to_save=result_file,
@@ -436,7 +459,7 @@ def main():
         list_of_header=Headers.header_result(),
         list_of_contents=gsresult_summary,
         list_of_red=["MISMATCH", "UNDEFINED", "FAIL"],
-        list_of_green=["PASS", "MATCH"]
+        list_of_green=["PASS", "MATCH"],
     )
 
     is_ok_gerancell = PrintToFile.to_xlsx_undefined_filled(
@@ -445,7 +468,7 @@ def main():
         list_of_header=Headers.header_baseline(),
         list_of_contents=gs_result_final,
         list_of_red=["MISMATCH"],
-        list_of_green=["MATCH"]
+        list_of_green=["MATCH"],
     )
 
     print("GS Result save as:", result_file)

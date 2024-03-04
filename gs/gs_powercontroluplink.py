@@ -21,33 +21,38 @@ def gs_powercontroluplink_process(
             else:
                 oss_value = g_data[index_param]
 
-            compliance = "MATCH" if str(oss_value) == str(baseline_value) \
-                         else "MISMATCH"
+            compliance = (
+                "MATCH"
+                if str(oss_value) == str(baseline_value)
+                else "MISMATCH"
+            )
 
             prefix = (
                 "SubNetwork=ONRM_ROOT_MO,SubNetwork="
                 if "CA1BSC1" in NodeId or "VA1BSC1" in NodeId
                 else "SubNetwork=ONRM_ROOT_MO_R,SubNetwork="
             )
-            gs_data = [NodeId,
-                       GeranCellId,
-                       moc,
-                       param,
-                       oss_value,
-                       baseline_value,
-                       compliance,
-                       # """
-                       # SubNetwork=ONRM_ROOT_MO_R,SubNetwork=HA1BSC1,
-                       # MeContext=HA1BSC1,ManagedElement=HA1BSC1,
-                       # BscFunction=1,BscM=1,GeranCellM=1,GeranCell=SJKL3,
-                       # PowerControl=1,PowerControlUplink=1
-                       # """
-                       f"cmedit set {prefix}{NodeId},MeContext={NodeId},"
-                       f"ManagedElement={NodeId},BscFunction=1,BscM=1,"
-                       f"GeranCellM=1,GeranCell={GeranCellId},"
-                       f"PowerControl=1,PowerControlUplink=1 "
-                       f"{param}={baseline_value}"
-                       f" --force"]
+            gs_data = [
+                NodeId,
+                GeranCellId,
+                moc,
+                param,
+                oss_value,
+                baseline_value,
+                compliance,
+                # """
+                # SubNetwork=ONRM_ROOT_MO_R,SubNetwork=HA1BSC1,
+                # MeContext=HA1BSC1,ManagedElement=HA1BSC1,
+                # BscFunction=1,BscM=1,GeranCellM=1,GeranCell=SJKL3,
+                # PowerControl=1,PowerControlUplink=1
+                # """
+                f"cmedit set {prefix}{NodeId},MeContext={NodeId},"
+                f"ManagedElement={NodeId},BscFunction=1,BscM=1,"
+                f"GeranCellM=1,GeranCell={GeranCellId},"
+                f"PowerControl=1,PowerControlUplink=1 "
+                f"{param}={baseline_value}"
+                f" --force",
+            ]
 
             gs_result.append(gs_data)
 

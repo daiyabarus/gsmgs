@@ -103,6 +103,7 @@ def gs_gerancellrelation():
         ("tROffset", "0"),
     ]
 
+
 def gs_externalgerancellrelation():
     return [
         ("cand", "BOTH"),
@@ -119,6 +120,7 @@ def gs_externalgerancellrelation():
         ("tRHyst", "2"),
         ("tROffset", "0"),
     ]
+
 
 def gs_gprs():
     return [
@@ -156,7 +158,7 @@ def gs_idlechannelmeasurement():
 def gs_idlemodeandpaging():
     return [
         ("acc", "null"),
-        ("accMin", "107"),
+        ("accMin", "SUFFIX"),
         ("agBlk", "2"),
         ("att", "YES"),
         ("cb", "NO"),

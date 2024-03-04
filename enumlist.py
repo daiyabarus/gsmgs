@@ -69,6 +69,7 @@ def gerancellrelation_col():
         "tROffset": 19,
     }
 
+
 def externalgerancellrelation_col():
     return {
         "NodeId": 0,
@@ -96,6 +97,7 @@ def externalgerancellrelation_col():
         "tRHyst": 22,
         "tROffset": 23,
     }
+
 
 def gprs_col():
     return {

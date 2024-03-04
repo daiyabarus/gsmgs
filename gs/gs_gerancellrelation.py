@@ -31,26 +31,31 @@ def gs_gerancellrelation_process(
             else:
                 oss_value = g_data[index_param]
 
-            compliance = "MATCH" if str(oss_value) == str(baseline_value) \
-                         else "MISMATCH"
+            compliance = (
+                "MATCH"
+                if str(oss_value) == str(baseline_value)
+                else "MISMATCH"
+            )
 
             prefix = (
                 "SubNetwork=ONRM_ROOT_MO,SubNetwork="
                 if "CA1BSC1" in NodeId or "VA1BSC1" in NodeId
                 else "SubNetwork=ONRM_ROOT_MO_R,SubNetwork="
             )
-            gs_data = [NodeId,
-                       GeranCellId,
-                       moc,
-                       param,
-                       oss_value,
-                       baseline_value,
-                       compliance,
-                       f"cmedit set {prefix}{NodeId},MeContext={NodeId},"
-                       f"ManagedElement={NodeId},BscFunction=1,BscM=1,"
-                       f"GeranCellM=1,GeranCell={GeranCellId},GeranCellRelation={GeranCellRelationId} "
-                       f"{param}={baseline_value}"
-                       f" --force"]
+            gs_data = [
+                NodeId,
+                GeranCellId,
+                moc,
+                param,
+                oss_value,
+                baseline_value,
+                compliance,
+                f"cmedit set {prefix}{NodeId},MeContext={NodeId},"
+                f"ManagedElement={NodeId},BscFunction=1,BscM=1,"
+                f"GeranCellM=1,GeranCell={GeranCellId},GeranCellRelation={GeranCellRelationId} "
+                f"{param}={baseline_value}"
+                f" --force",
+            ]
 
             gs_result.append(gs_data)
 

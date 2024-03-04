@@ -1,15 +1,18 @@
 from toget import ToGet
 
+
 def gs_idlechannelmeasurement_process(
     txt_data: list,
     netstatremedy_data: list,
     gslist_data: list,
     dt_col: dict,
-    moc: str
+    moc: str,
 ):
     gs_result = []
 
-    netstatremedy_dict = {str(row[0]).strip(): row[9] for row in netstatremedy_data}
+    netstatremedy_dict = {
+        str(row[0]).strip(): row[9] for row in netstatremedy_data
+    }
 
     for raw_data in txt_data:
         if str(raw_data).strip() == "" or "NodeId" in str(raw_data):
@@ -65,19 +68,21 @@ def gs_idlechannelmeasurement_process(
                 if "CA1BSC1" in NodeId or "VA1BSC1" in NodeId
                 else "SubNetwork=ONRM_ROOT_MO_R,SubNetwork="
             )
-            gs_data = [NodeId,
-                       GeranCellId,
-                       moc,
-                       param,
-                       oss_value,
-                       baseline_value,
-                       compliance,
-                       f"cmedit set {prefix}{NodeId},MeContext={NodeId},"
-                       f"ManagedElement={NodeId},BscFunction=1,BscM=1,"
-                       f"GeranCellM=1,GeranCell={GeranCellId},"
-                       f"ChannelAllocAndOpt=1,IdleChannelMeasurement=1 "
-                       f"{param}={baseline_value}"
-                       f" --force"]
+            gs_data = [
+                NodeId,
+                GeranCellId,
+                moc,
+                param,
+                oss_value,
+                baseline_value,
+                compliance,
+                f"cmedit set {prefix}{NodeId},MeContext={NodeId},"
+                f"ManagedElement={NodeId},BscFunction=1,BscM=1,"
+                f"GeranCellM=1,GeranCell={GeranCellId},"
+                f"ChannelAllocAndOpt=1,IdleChannelMeasurement=1 "
+                f"{param}={baseline_value}"
+                f" --force",
+            ]
 
             gs_result.append(gs_data)
 

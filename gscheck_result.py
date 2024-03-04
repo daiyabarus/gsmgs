@@ -1,6 +1,7 @@
 from enumlist import remedy_col
 from toget import ToGet
 
+
 def cr_dt_from_netstats(netpath: str):
     netlist = ToGet.csv_to_list(csv_file=netpath)
     dt_col = remedy_col()
@@ -25,7 +26,7 @@ def cr_dt_from_netstats(netpath: str):
 def get_mismatches(gslist: list) -> dict:
     dt_mismatch = dict()
     for data_1 in gslist:
-        # mismatch_tmp = [item for item in data_1 if item == "MISMATCH"]
+
         gerancellid = data_1[1]
         mismatch_tmp = []
         for data_2 in data_1:
@@ -80,8 +81,12 @@ def gs_process_result(
     )
     dt_mismatch_radiolinktimeout = get_mismatches(gs_result_radiolinktimeout)
     dt_mismatch_powersavings = get_mismatches(gs_result_powersavings)
-    dt_mismatch_powercontroluplink = get_mismatches(gs_result_powercontroluplink)
-    dt_mismatch_powercontroldownlink = get_mismatches(gs_result_powercontroldownlink)
+    dt_mismatch_powercontroluplink = get_mismatches(
+        gs_result_powercontroluplink
+    )
+    dt_mismatch_powercontroldownlink = get_mismatches(
+        gs_result_powercontroldownlink
+    )
     dt_mismatch_powercontrol = get_mismatches(gs_result_powercontrol)
     dt_mismatch_msqueuing = get_mismatches(gs_result_msqueuing)
     dt_mismatch_mobility = get_mismatches(gs_result_mobility)
@@ -102,14 +107,20 @@ def gs_process_result(
     )
     dt_mismatch_gprs = get_mismatches(gs_result_gprs)
     dt_mismatch_gerancellrelation = get_mismatches(gs_result_gerancellrelation)
-    dt_mismatch_externalgerancellrelation = get_mismatches(gs_result_externalgerancellrelation)
-    dt_mismatch_dynamichrallocation = get_mismatches(gs_result_dynamichrallocation)
+    dt_mismatch_externalgerancellrelation = get_mismatches(
+        gs_result_externalgerancellrelation
+    )
+    dt_mismatch_dynamichrallocation = get_mismatches(
+        gs_result_dynamichrallocation
+    )
     dt_mismatch_dynamicfrhrmodeadaption = get_mismatches(
         gs_result_dynamicfrhrmodeadaption
     )
     dt_mismatch_dtm = get_mismatches(gs_result_dtm)
     dt_mismatch_channelgroup = get_mismatches(gs_result_channelgroup)
-    dt_mismatch_channelallocandopt = get_mismatches(gs_result_channelallocandopt)
+    dt_mismatch_channelallocandopt = get_mismatches(
+        gs_result_channelallocandopt
+    )
     dt_mismatch_cellloadsharing = get_mismatches(gs_result_cellloadsharing)
 
     dt_sector_name__site_name, dt_sector_name__loc_code = cr_dt_from_netstats(
@@ -123,67 +134,75 @@ def gs_process_result(
         site_name = dt_sector_name__site_name.get(GeranCellId, "UNDEFINED")
         audit_date = ToGet.get_current_date()
         audit_by = "YUPANA"
-        gerancell_pass: int = get_moc_pass(dt_mismatch_gerancell, GeranCellId)
-        subcellloaddistribution_pass: int = get_moc_pass(
+        gerancell_pass: str = get_moc_pass(dt_mismatch_gerancell, GeranCellId)
+        subcellloaddistribution_pass: str = get_moc_pass(
             dt_mismatch_subcellloaddistribution, GeranCellId
         )
-        radiolinktimeout_pass: int = get_moc_pass(
+        radiolinktimeout_pass: str = get_moc_pass(
             dt_mismatch_radiolinktimeout, GeranCellId
         )
-        powersavings_pass: int = get_moc_pass(dt_mismatch_powersavings, GeranCellId)
-        powercontroluplink_pass: int = get_moc_pass(
+        powersavings_pass: str = get_moc_pass(
+            dt_mismatch_powersavings, GeranCellId
+        )
+        powercontroluplink_pass: str = get_moc_pass(
             dt_mismatch_powercontroluplink, GeranCellId
         )
-        powercontroldownlink_pass: int = get_moc_pass(
+        powercontroldownlink_pass: str = get_moc_pass(
             dt_mismatch_powercontroldownlink, GeranCellId
         )
-        powercontrol_pass: int = get_moc_pass(dt_mismatch_powercontrol, GeranCellId)
-        msqueuing_pass: int = get_moc_pass(dt_mismatch_msqueuing, GeranCellId)
-        mobility_pass: int = get_moc_pass(dt_mismatch_mobility, GeranCellId)
-        locatingurgency_pass: int = get_moc_pass(
+        powercontrol_pass: str = get_moc_pass(
+            dt_mismatch_powercontrol, GeranCellId
+        )
+        msqueuing_pass: str = get_moc_pass(dt_mismatch_msqueuing, GeranCellId)
+        mobility_pass: str = get_moc_pass(dt_mismatch_mobility, GeranCellId)
+        locatingurgency_pass: str = get_moc_pass(
             dt_mismatch_locatingurgency, GeranCellId
         )
-        locatingpenalty_pass: int = get_moc_pass(
+        locatingpenalty_pass: str = get_moc_pass(
             dt_mismatch_locatingpenalty, GeranCellId
         )
-        locatingintracellhandover_pass: int = get_moc_pass(
+        locatingintracellhandover_pass: str = get_moc_pass(
             dt_mismatch_locatingintracellhandover, GeranCellId
         )
-        locatingfilter_pass: int = get_moc_pass(dt_mismatch_locatingfilter, GeranCellId)
-        lchadaptiveconf_pass: int = get_moc_pass(
+        locatingfilter_pass: str = get_moc_pass(
+            dt_mismatch_locatingfilter, GeranCellId
+        )
+        lchadaptiveconf_pass: str = get_moc_pass(
             dt_mismatch_lchadaptiveconf, GeranCellId
         )
-        interranmobility_pass: int = get_moc_pass(
+        interranmobility_pass: str = get_moc_pass(
             dt_mismatch_interranmobility, GeranCellId
         )
-        idlemodeandpaging_pass: int = get_moc_pass(
+        idlemodeandpaging_pass: str = get_moc_pass(
             dt_mismatch_idlemodeandpaging, GeranCellId
         )
-        idlechannelmeasurement_pass: int = get_moc_pass(
+        idlechannelmeasurement_pass: str = get_moc_pass(
             dt_mismatch_idlechannelmeasurement, GeranCellId
         )
-        hierarchicalcellstructure_pass: int = get_moc_pass(
+        hierarchicalcellstructure_pass: str = get_moc_pass(
             dt_mismatch_hierarchicalcellstructure, GeranCellId
         )
-        gprs_pass: int = get_moc_pass(dt_mismatch_gprs, GeranCellId)
-        gerancellrelation_pass: int = get_moc_pass(
+        gprs_pass: str = get_moc_pass(dt_mismatch_gprs, GeranCellId)
+        gerancellrelation_pass: str = get_moc_pass(
             dt_mismatch_gerancellrelation, GeranCellId
         )
-        externalgerancellrelation_pass: int = get_moc_pass(
+        externalgerancellrelation_pass: str = get_moc_pass(
             dt_mismatch_externalgerancellrelation, GeranCellId
         )
-        dynamichrallocation_pass: int = get_moc_pass(
+        dynamichrallocation_pass: str = get_moc_pass(
             dt_mismatch_dynamichrallocation, GeranCellId
         )
-        dynamicfrhrmodeadaption_pass: int = get_moc_pass(
+        dynamicfrhrmodeadaption_pass: str = get_moc_pass(
             dt_mismatch_dynamicfrhrmodeadaption, GeranCellId
         )
-        dtm_pass: int = get_moc_pass(dt_mismatch_dtm, GeranCellId)
-        channelgroup_pass: int = get_moc_pass(dt_mismatch_channelgroup, GeranCellId)
-        channelallocandopt_pass: int = get_moc_pass(
+        dtm_pass: str = get_moc_pass(dt_mismatch_dtm, GeranCellId)
+        channelgroup_pass: str = get_moc_pass(
+            dt_mismatch_channelgroup, GeranCellId
+        )
+        channelallocandopt_pass: str = get_moc_pass(
             dt_mismatch_channelallocandopt, GeranCellId
         )
-        cellloadsharing_pass: int = get_moc_pass(
+        cellloadsharing_pass: str = get_moc_pass(
             dt_mismatch_cellloadsharing, GeranCellId
         )
         remark = ""

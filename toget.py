@@ -136,7 +136,9 @@ class ToGet:
         if sheet_name in wb.sheetnames:
             return wb[sheet_name]
         else:
-            print(f"Sheet named '{sheet_name}' does not exist in the workbook.")
+            print(
+                f"Sheet named '{sheet_name}' does not exist in the workbook."
+            )
             return None
 
     @staticmethod
@@ -188,13 +190,15 @@ class ToGet:
 
         return reader_line
 
-# INFO: Sheet to dict list
+    # INFO: Sheet to dict list
     @staticmethod
     def sheet_to_dict_list(worksheet):
         data = []
         for row in worksheet.iter_rows(values_only=True, min_row=2):
-            row_data = {worksheet.cell(row=1, column=col).value:
-                cell for col, cell in enumerate(row, start=1)}
+            row_data = {
+                worksheet.cell(row=1, column=col).value: cell
+                for col, cell in enumerate(row, start=1)
+            }
             data.append(row_data)
         return data
 

@@ -27,6 +27,7 @@ thin_border = Border(
     bottom=Side(style="thin"),
 )
 
+
 class PrintToFile:
     """Creating files with different types"""
 
@@ -134,35 +135,47 @@ class PrintToFile:
         # Sort and remove duplicates
         list_of_contents = sorted(list_of_contents, key=lambda x: x[0])
         unique_contents = []
-        [unique_contents.append(item) for item in list_of_contents if item not in unique_contents]
+        [
+            unique_contents.append(item)
+            for item in list_of_contents
+            if item not in unique_contents
+        ]
         # Freeze the first row
-        ws_target.freeze_panes = 'A2'
+        ws_target.freeze_panes = "A2"
 
         # header
         for index, header in enumerate(list_of_header):
             ws_target.cell(row=1, column=index + 1).value = header
-            ws_target.cell(row=1, column=index + 1).font = Font(name="Calibri",
-                                                                size=10,
-                                                                bold=True,
-                                                                color="FFFEFB")
+            ws_target.cell(row=1, column=index + 1).font = Font(
+                name="Calibri", size=10, bold=True, color="FFFEFB"
+            )
             ws_target.cell(row=1, column=index + 1).fill = headerFill
             ws_target.cell(row=1, column=index + 1).border = thin_border
             ws_target.cell(row=1, column=index + 1).alignment = Alignment(
-                horizontal="center", vertical="center")
+                horizontal="center", vertical="center"
+            )
 
         for row_index, items in enumerate(unique_contents, start=2):
             for col_index, item in enumerate(items, start=1):
-                cell = ws_target.cell(row=row_index, column=col_index, value=item)
-                if list_of_red and any(ext in str(item) for ext in list_of_red):
+                cell = ws_target.cell(
+                    row=row_index, column=col_index, value=item
+                )
+                if list_of_red and any(
+                    ext in str(item) for ext in list_of_red
+                ):
                     cell.fill = redFill
                     cell.font = Font(name="Calibri", size=10, color="FF9C0006")
-                elif list_of_green and any(ext in str(item) for ext in list_of_green):
+                elif list_of_green and any(
+                    ext in str(item) for ext in list_of_green
+                ):
                     cell.fill = greenFill
                     cell.font = Font(name="Calibri", size=10, color="FF006100")
                 else:
                     cell.font = Font(name="Calibri", size=10)
                 cell.border = thin_border
-        ws_target.auto_filter.ref = f"A1:{get_column_letter(len(list_of_header))}1"
+        ws_target.auto_filter.ref = (
+            f"A1:{get_column_letter(len(list_of_header))}1"
+        )
         wb.save(file_to_save)
 
         return os.path.exists(file_to_save)
@@ -268,7 +281,8 @@ class PrintToFile:
                     ws_target.cell(
                         row=starting_row, column=col + 1 + col_offside
                     ).alignment = Alignment(
-                        horizontal="center", vertical="center")
+                        horizontal="center", vertical="center"
+                    )
 
                     ws_target.cell(
                         row=starting_row, column=col + 1 + col_offside

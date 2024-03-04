@@ -1,15 +1,17 @@
 def gs_powercontrol_process(
-        txt_data: list,
-        newreference_gsmcells: list,
-        newreference_sites: list,
-        gslist_data: list,
-        dt_col: dict,
-        moc: str
+    txt_data: list,
+    newreference_gsmcells: list,
+    newreference_sites: list,
+    gslist_data: list,
+    dt_col: dict,
+    moc: str,
 ):
     gs_result = []
 
-    geran_to_loc = {cell['cell']: cell['locCode'] for cell in newreference_gsmcells}
-    loc_to_er = {site['locCode']: site['er'] for site in newreference_sites}
+    geran_to_loc = {
+        cell["cell"]: cell["locCode"] for cell in newreference_gsmcells
+    }
+    loc_to_er = {site["locCode"]: site["er"] for site in newreference_sites}
 
     for raw_data in txt_data:
         if str(raw_data).strip() == "" or "NodeId" in str(raw_data):
@@ -27,13 +29,16 @@ def gs_powercontrol_process(
 
             if baseline_value == "SUFFIX":
                 if param == "hpbState":
-                    if any(substring in er for substring in ["er_ON_DURHAM",
-                                                             "er_ON_PEEL",
-                                                             "er_ON_HALTON",
-                                                             "er_ON_TORONTO",
-                                                             "er_ON_YORK",
-                                                             ]
-                           ):
+                    if any(
+                        substring in er
+                        for substring in [
+                            "er_ON_DURHAM",
+                            "er_ON_PEEL",
+                            "er_ON_HALTON",
+                            "er_ON_TORONTO",
+                            "er_ON_YORK",
+                        ]
+                    ):
                         baseline_value = "ACTIVE"
                     else:
                         baseline_value = "INACTIVATE"
@@ -44,27 +49,32 @@ def gs_powercontrol_process(
             else:
                 oss_value = g_data[index_param]
 
-            compliance = "MATCH" if str(oss_value) == str(baseline_value) \
-                         else "MISMATCH"
+            compliance = (
+                "MATCH"
+                if str(oss_value) == str(baseline_value)
+                else "MISMATCH"
+            )
 
             prefix = (
                 "SubNetwork=ONRM_ROOT_MO,SubNetwork="
                 if "CA1BSC1" in NodeId or "VA1BSC1" in NodeId
                 else "SubNetwork=ONRM_ROOT_MO_R,SubNetwork="
             )
-            gs_data = [NodeId,
-                       GeranCellId,
-                       moc,
-                       param,
-                       oss_value,
-                       baseline_value,
-                       compliance,
-                       f"cmedit set {prefix}{NodeId},MeContext={NodeId},"
-                       f"ManagedElement={NodeId},BscFunction=1,BscM=1,"
-                       f"GeranCellM=1,GeranCell={GeranCellId},"
-                       f"Mobility=1 "
-                       f"{param}={baseline_value}"
-                       f" --force"]
+            gs_data = [
+                NodeId,
+                GeranCellId,
+                moc,
+                param,
+                oss_value,
+                baseline_value,
+                compliance,
+                f"cmedit set {prefix}{NodeId},MeContext={NodeId},"
+                f"ManagedElement={NodeId},BscFunction=1,BscM=1,"
+                f"GeranCellM=1,GeranCell={GeranCellId},"
+                f"Mobility=1 "
+                f"{param}={baseline_value}"
+                f" --force",
+            ]
 
             gs_result.append(gs_data)
 
