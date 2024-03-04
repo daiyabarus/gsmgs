@@ -41,7 +41,7 @@ def gs_powercontrol_process(
                     ):
                         baseline_value = "ACTIVE"
                     else:
-                        baseline_value = "INACTIVATE"
+                        baseline_value = "INACTIVE"
 
             index_param = dt_col.get(param, -1)
             if index_param == -1:
@@ -71,7 +71,7 @@ def gs_powercontrol_process(
                 f"cmedit set {prefix}{NodeId},MeContext={NodeId},"
                 f"ManagedElement={NodeId},BscFunction=1,BscM=1,"
                 f"GeranCellM=1,GeranCell={GeranCellId},"
-                f"Mobility=1 "
+                f"PowerControl=1 "
                 f"{param}={baseline_value}"
                 f" --force",
             ]

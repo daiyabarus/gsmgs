@@ -447,10 +447,10 @@ def main():
         gs_result_subcellloaddistribution=gs_result_subcellloaddistribution,
     )
 
-    enm = source_folder[:6]
+    enm = source_folder[:3]
     result_file = os.path.join(
         source_folder,
-        str(enm) + "_GS_UMTS_RESULT_" + ToGet.get_current_datetime() + ".xlsx",
+        str(enm) + "_GS_GSM_RESULT_" + ToGet.get_current_datetime() + ".xlsx",
     )
 
     is_ok_gsresult = PrintToFile.to_xlsx_undefined_filled(

@@ -36,7 +36,7 @@ def gs_channelgroup():
         ("sas", "QUALITY"),
         ("scType", "UL"),
         ("sdcch", "1"),
-        ("tn", "1#2#7"),
+        ("tn", "1,2,7"),
         ("tn7Bcch", "EGPRS"),
         ("tnBcch", "EGPRS"),
     ]
@@ -167,7 +167,7 @@ def gs_idlemodeandpaging():
         ("cro", "2"),
         ("maxRet", "4"),
         ("mFrms", "5"),
-        ("nccPerm", "0#1#2#3#4#5#6#7"),
+        ("nccPerm", "0,1,2,3,4,5,6,7"),
         ("pt", "0"),
         ("siMsg1", "ON"),
         ("siMsg7", "OFF"),
