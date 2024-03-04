@@ -1,0 +1,4 @@
+NodeId	BscFunctionId	BscMId	GeranCellMId	GeranCellId	PowerControlId	PowerControlDownlinkId	bsPwrMin	bsRPwrOffset	dBtsPcState	dtxD	lCompDl	qCompDl	qDesDl	qDesDlAfr	qDesDlAhr	ssDesDl	ssDesDlAfr	ssDesDlAhr	ssDesDlAwb	ssOffsetDl	ssOffsetDlAfr
+TO3BSC1	1	1	1	KBC3	1	1	-20	16	ACTIVE	ON	60	60	30	40	40	92	90	90	90	5	5
+TO3BSC1	1	1	1	KBC1	1	1	-20	16	ACTIVE	ON	60	60	30	40	40	92	90	90	90	5	5
+TO3BSC1	1	1	1	KBC2	1	1	-20	16	ACTIVE	ON	60	60	30	40	40	92	90	90	90	5	5

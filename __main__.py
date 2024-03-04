@@ -4,7 +4,7 @@ import gslist
 import enumlist
 import time
 from datetime import datetime
-
+import re
 from gs import (
     gs_channelallocandopt_process,
     gs_cellloadsharing_process,
@@ -46,9 +46,6 @@ print("StartTime: ", datetime.fromtimestamp(startTime))
 
 def main():
     source_folder = sys.argv[1]
-    # source_netstats = sys.argv[2]
-    # source_newreference = sys.argv[3]
-    # source_masterlist = sys.argv[4]
     source_data = sys.argv[2]
     source_netstats = os.path.join(source_data, "netstatRemedy.csv")
     source_masterlist = os.path.join(source_data, "MasterSiteList.xlsx")
@@ -447,10 +444,15 @@ def main():
         gs_result_subcellloaddistribution=gs_result_subcellloaddistribution,
     )
 
-    enm = source_folder[:3]
+    enm_match = re.search(r"(ENM[1-4])", source_folder)
+    if enm_match:
+        enm = enm_match.group(1)
+    else:
+        enm = "ENM"
+
     result_file = os.path.join(
         source_folder,
-        str(enm) + "_GS_GSM_RESULT_" + ToGet.get_current_datetime() + ".xlsx",
+        f"{enm}_GS_GSM_RESULT_" + ToGet.get_current_datetime() + ".xlsx",
     )
 
     is_ok_gsresult = PrintToFile.to_xlsx_undefined_filled(
